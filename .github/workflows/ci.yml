@@ -29,5 +29,5 @@ jobs:
       - run: npm ci
         name: Install dependencies
 
-      - run: tsp compile .
+      - run: npx tsp compile .
         name: Build
