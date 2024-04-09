@@ -25,9 +25,11 @@ jobs:
         with:
           node-version: 20.x
 
-
       - run: npm ci
         name: Install dependencies
+
+      - run: echo "::add-matcher::tsp.json"
+        name: Add tsp problem matcher
 
       - run: npx tsp compile .
         name: Build
