@@ -4,7 +4,7 @@
       "owner": "tsp",
       "pattern": [
         {
-          "regexp": "^([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+([a-z\\-]+)\\s*:\\s*(.*)$",
+          "regexp": "^([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+([a-z0-9\\-]+)\\s*:\\s*(.*)$",
           "file": 1,
           "line": 2,
           "column": 3,
