@@ -31,5 +31,8 @@ jobs:
       - run: echo "::add-matcher::.github/tsp.json"
         name: Add tsp problem matcher
 
-      - run: npx tsp compile . --pretty false
+      # - run: npx tsp compile . --pretty false
+      #   name: Build
+
+      - run: npx tsp compile .
         name: Build
