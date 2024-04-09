@@ -1,0 +1,18 @@
+{
+  "name": "tsp-playground",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/openapi3": "latest"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "private": true,
+  "devDependencies": {
+    "picocolors": "^1.0.0",
+    "vitest": "^1.4.0"
+  }
+}
