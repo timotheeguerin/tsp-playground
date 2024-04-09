@@ -30,11 +30,6 @@ jobs:
 
       - run: echo "::add-matcher::.github/tsp.json"
         name: Add tsp problem matcher
-      - run: |
-          echo $PWD
-          echo "/home/runner/work/tsp-playground/tsp-playground/main.tsp:4:12 - error unknown-abc: Custom error 1"
-          echo "main.tsp:3:1 - error unknown-abc: Custom error 1"
-        name: Test tsp problem matcher
 
       - run: npx tsp compile . --pretty false
         name: Build
