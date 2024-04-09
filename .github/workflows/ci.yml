@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
         name: Install dependencies
 
-      - run: echo "::add-matcher::tsp.json"
+      - run: echo "::add-matcher::.github/tsp.json"
         name: Add tsp problem matcher
 
       - run: npx tsp compile .
