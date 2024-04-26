@@ -1,6 +1,7 @@
 import crossSpawn from "cross-spawn";
-import { spawn } from "child_process";
+import { spawn, _parse } from "child_process";
 
+console.log("PArsd", _parse("npm", ["ls"]));
 export function execAsync(
   spawnFn: any,
   cmd: string,
