@@ -6,10 +6,11 @@ console.log("PArsd", _parse("npm", ["ls"]));
 export function execAsync(
   spawnFn: any,
   cmd: string,
-  args: string[]
+  args: string[],
+  opts = {}
 ): Promise<any> {
   return new Promise((resolve, reject) => {
-    const child = spawnFn(cmd, args);
+    const child = spawnFn(cmd, args, opts);
     let stdall = Buffer.from("");
     let stdout = Buffer.from("");
     let stderr = Buffer.from("");
@@ -57,7 +58,9 @@ if (process.platform === "win32") {
 }
 
 try {
-  await execAsync(spawn, "npm", ["ls"]);
+  await execAsync(spawn, "npm", ["ls"], {
+    shell: process.platform === "win32",
+  });
 } catch (error) {
   console.error("-----FAILED WITH REGULAR SPAWN-----");
   console.error(error);
