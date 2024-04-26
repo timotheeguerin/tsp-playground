@@ -1,5 +1,5 @@
-const crossSpawn = require("cross-spawn");
-const { spawn } = require("child_process");
+import crossSpawn from "cross-spawn";
+import { spawn } from "child_process";
 
 export function execAsync(
   spawnFn: any,
