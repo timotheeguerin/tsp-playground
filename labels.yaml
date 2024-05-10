@@ -1,0 +1,3 @@
+- name: foo
+  color: "C50000"
+  description: "This is a foo label"
