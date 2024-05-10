@@ -23,8 +23,8 @@ async function main() {
   for (const label of labels) {
     validateLabel(label);
   }
+  const octokit = new Octokit({ auth: `token ${process.env.GITHUB_TOKEN}` });
 
-  const octokit = new Octokit();
   const existingLabels = await fetchAllLabels(octokit);
   console.log("Existing labels", existingLabels);
   const labelToUpdate: Label[] = [];
