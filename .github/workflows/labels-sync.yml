@@ -31,3 +31,5 @@ jobs:
 
       - run: npx tsx ./sync-labels.ts
         name: Sync labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
