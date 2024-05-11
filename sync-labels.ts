@@ -71,9 +71,13 @@ async function updateGithubLabels(
   console.log("Labels to update", labelToUpdate);
   console.log("Labels to create", labelsToCreate);
   console.log("Labels to delete", labelsToDelete);
+  console.log("");
+
+  logAction("Applying changes", options);
   await updateLabels(octokit, labelToUpdate, options);
   await createLabels(octokit, labelsToCreate, options);
   await deleteLabels(octokit, labelsToDelete, options);
+  logAction("Done applying changes", options);
 }
 
 async function fetchAllLabels(octokit: Octokit) {
@@ -84,6 +88,11 @@ async function fetchAllLabels(octokit: Octokit) {
   return result;
 }
 
+function logAction(message: string, options: UpdateGithubLabelOptions) {
+  const prefix = options.dryRun ? "[dry-run] " : "";
+  console.log(prefix + message);
+}
+
 async function doAction(
   action: () => Promise<unknown>,
   label: string,
@@ -92,8 +101,7 @@ async function doAction(
   if (!options.dryRun) {
     await action();
   }
-  const prefix = options.dryRun ? "[dry-run] " : "";
-  console.log(prefix + label);
+  logAction(label, options);
 }
 async function createLabels(
   octokit: Octokit,

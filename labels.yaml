@@ -1,5 +1,5 @@
 - name: foo
-  color: "C50000"
+  color: "C500D0"
   description: "This is a foo label"
 
 - name: bar
