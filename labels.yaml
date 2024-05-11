@@ -1,3 +1,7 @@
 - name: foo
   color: "C50000"
   description: "This is a foo label"
+
+- name: bar
+  color: "32513A"
+  description: "This is a bar label"

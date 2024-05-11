@@ -29,7 +29,7 @@ jobs:
       - run: npm ci
         name: Install dependencies
 
-      - run: npx tsx ./sync-labels.ts
+      - run: npx tsx ./sync-labels.ts --update-github-labels --dry-run
         name: Sync labels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

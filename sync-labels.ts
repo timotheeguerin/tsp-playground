@@ -1,7 +1,7 @@
 import { readFile } from "fs/promises";
 import { parse } from "yaml";
 import { Octokit } from "@octokit/rest";
-import { inspect } from "util";
+import { inspect, parseArgs } from "util";
 const labelFile = "labels.yaml";
 
 const repo = {
@@ -11,18 +11,37 @@ const repo = {
 await main();
 
 interface Label {
-  name: string;
-  color: string;
-  description: string;
+  readonly name: string;
+  readonly color: string;
+  readonly description: string;
 }
 
 async function main() {
+  const options = parseArgs({
+    args: process.argv.slice(2),
+    options: {
+      "dry-run": { type: "boolean" },
+      "update-github-labels": { type: "boolean" },
+    },
+  });
   const content = await readFile(labelFile, "utf8");
   const labels = parse(content);
   console.log("Labels:", labels);
   for (const label of labels) {
     validateLabel(label);
   }
+  if (options.values["update-github-labels"]) {
+    await updateGithubLabels(labels, { dryRun: options.values["dry-run"] });
+  }
+}
+
+interface UpdateGithubLabelOptions {
+  readonly dryRun?: boolean;
+}
+async function updateGithubLabels(
+  labels: Label[],
+  options: UpdateGithubLabelOptions = {}
+) {
   const octokit = new Octokit({ auth: `token ${process.env.GITHUB_TOKEN}` });
 
   const existingLabels = await fetchAllLabels(octokit);
@@ -52,9 +71,9 @@ async function main() {
   console.log("Labels to update", labelToUpdate);
   console.log("Labels to create", labelsToCreate);
   console.log("Labels to delete", labelsToDelete);
-  await updateLabels(octokit, labelToUpdate);
-  await createLabels(octokit, labelsToCreate);
-  await deleteLabels(octokit, labelsToDelete);
+  await updateLabels(octokit, labelToUpdate, options);
+  await createLabels(octokit, labelsToCreate, options);
+  await deleteLabels(octokit, labelsToDelete, options);
 }
 
 async function fetchAllLabels(octokit: Octokit) {
@@ -65,25 +84,54 @@ async function fetchAllLabels(octokit: Octokit) {
   return result;
 }
 
-async function createLabels(octokit: Octokit, labels: Label[]) {
+async function doAction(
+  action: () => Promise<unknown>,
+  label: string,
+  options: UpdateGithubLabelOptions
+) {
+  if (!options.dryRun) {
+    await action();
+  }
+  const prefix = options.dryRun ? "[dry-run] " : "";
+  console.log(prefix + label);
+}
+async function createLabels(
+  octokit: Octokit,
+  labels: Label[],
+  options: UpdateGithubLabelOptions
+) {
   for (const label of labels) {
-    await octokit.rest.issues.createLabel({ ...repo, ...label });
-    console.log(
-      `Created label ${label.name}, color: ${label.color}, description: ${label.description}`
+    await doAction(
+      () => octokit.rest.issues.createLabel({ ...repo, ...label }),
+      `Created label ${label.name}, color: ${label.color}, description: ${label.description}`,
+      options
     );
   }
 }
-async function updateLabels(octokit: Octokit, labels: Label[]) {
+async function updateLabels(
+  octokit: Octokit,
+  labels: Label[],
+  options: UpdateGithubLabelOptions
+) {
   for (const label of labels) {
-    await octokit.rest.issues.updateLabel({ ...repo, ...label });
-    console.log(
-      `Updated label ${label.name}, color: ${label.color}, description: ${label.description}`
+    await doAction(
+      () => octokit.rest.issues.updateLabel({ ...repo, ...label }),
+      `Updated label ${label.name}, color: ${label.color}, description: ${label.description}`,
+      options
     );
   }
 }
-async function deleteLabels(octokit: Octokit, labels: string[]) {
+async function deleteLabels(
+  octokit: Octokit,
+  labels: string[],
+  options: UpdateGithubLabelOptions
+) {
   for (const name of labels) {
-    await octokit.rest.issues.deleteLabel({ ...repo, name });
+    await doAction(
+      () => octokit.rest.issues.deleteLabel({ ...repo, name }),
+      `Deleted label ${name}`,
+      options
+    );
     console.log(`Deleted label ${name}`);
   }
 }
