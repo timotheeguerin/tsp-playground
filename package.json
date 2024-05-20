@@ -1,0 +1,27 @@
+{
+  "name": "tsp-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "before-after-hook": "^2.2.3",
+    "deprecation": "^2.3.1",
+    "esbuild": "^0.20.2",
+    "fsevents": "^2.3.3",
+    "get-tsconfig": "^4.7.3",
+    "once": "^1.4.0",
+    "resolve-pkg-maps": "^1.0.0",
+    "tsx": "^4.9.4",
+    "typescript": "^5.4.5",
+    "undici-types": "^5.26.5",
+    "universal-user-agent": "^6.0.1",
+    "wrappy": "^1.0.2",
+    "yaml": "^2.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
